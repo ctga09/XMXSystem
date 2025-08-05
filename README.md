@@ -2,6 +2,8 @@
 
 A modern, real-time business intelligence dashboard for XMX Corp, built with cutting-edge technologies to provide comprehensive sales tracking, affiliate management, and performance analytics.
 
+🔗 **Live Demo**: [https://xmx-system.vercel.app](https://xmx-system.vercel.app)
+
 ## ✨ Features
 
 - 📊 **Real-time Dashboard** - Live sales and performance metrics
@@ -13,11 +15,18 @@ A modern, real-time business intelligence dashboard for XMX Corp, built with cut
 
 ## 🚀 Tech Stack
 
+### Frontend (This Repository)
 - **[Next.js 15](https://nextjs.org/)** - React framework with App Router
 - **[TypeScript](https://www.typescriptlang.org/)** - Type-safe development
 - **[Tailwind CSS v4](https://tailwindcss.com/)** - Utility-first styling
 - **[shadcn/ui](https://ui.shadcn.com/)** - Modern UI components
 - **[pnpm](https://pnpm.io/)** - Fast, disk space efficient package manager
+- **[Supabase](https://supabase.com/)** - Database and real-time subscriptions
+
+### Backend (Separate Project - Not in this repo)
+- **[FastAPI](https://fastapi.tiangolo.com/)** - Modern Python web framework
+- **[Python 3.11](https://www.python.org/)** - Backend runtime
+- **Google Cloud Run** - Serverless deployment (planned)
 
 ## 📋 Pré-requisitos
 
@@ -64,7 +73,7 @@ pnpm check:all          # Executa todas as verificações
 
 ```
 XMXSystem/
-├── frontend/               # Aplicação Next.js
+├── frontend/               # Aplicação Next.js (commitado no GitHub)
 │   ├── app/               # App Router
 │   │   ├── (dashboard)/   # Rotas do dashboard
 │   │   │   ├── affiliates/# Página de afiliados
@@ -75,8 +84,10 @@ XMXSystem/
 │   │   └── ui/           # Componentes shadcn/ui
 │   ├── lib/              # Utilitários
 │   └── public/           # Assets estáticos
-└── backend/              # (Vazio - futuro backend)
+└── backend/              # API FastAPI (NÃO commitado - desenvolvimento local)
 ```
+
+**Nota**: O diretório `/backend` está no `.gitignore` e não é versionado neste repositório.
 
 ## 🎨 Tema e Design
 
@@ -89,13 +100,23 @@ O projeto utiliza um tema dark personalizado com a seguinte paleta de cores:
 
 ## 🚦 Status do Projeto
 
-- ✅ Interface do dashboard implementada
-- ✅ Sistema de navegação com sidebar
-- ✅ Páginas de vendas e afiliados
-- ✅ Tema dark consistente
-- ⏳ Backend em desenvolvimento
-- ⏳ Autenticação real pendente
-- ⏳ Integração com API pendente
+### ✅ Concluído
+- Interface do dashboard implementada
+- Sistema de navegação com sidebar
+- Páginas de vendas e afiliados
+- Tema dark consistente
+- Deploy no Vercel
+- Banco de dados Supabase configurado
+- Backend API desenvolvido (FastAPI)
+
+### 🔄 Em Progresso
+- Integração frontend com Supabase
+- Substituição de dados mockados por dados reais
+
+### ⏳ Próximos Passos
+- Deploy do backend no Google Cloud Run
+- Autenticação com Supabase Auth
+- Configuração de webhooks com CartPanda
 
 ## 🤝 Contribuindo
 
@@ -118,27 +139,31 @@ pnpm lint:fix
 
 ## 🗺️ Roadmap
 
-### Phase 1 - Foundation (Current)
+### Phase 1 - Foundation ✅
 - [x] Project setup with Next.js 15
 - [x] UI component library integration
 - [x] Dark theme implementation
 - [x] Basic routing structure
-- [ ] Supabase integration
-- [ ] Authentication system
+- [x] Supabase database setup
+- [x] Frontend deployment on Vercel
+- [x] Backend API development (FastAPI)
 
-### Phase 2 - Core Features
-- [ ] Real-time data synchronization
-- [ ] Sales tracking API
-- [ ] Affiliate management system
-- [ ] Analytics dashboard
-- [ ] Email notifications
+### Phase 2 - Core Features (Current)
+- [x] Sales tracking API
+- [ ] Real-time data synchronization with Supabase
+- [ ] Authentication system with Supabase Auth
+- [ ] Webhook integration with CartPanda
+- [ ] Backend deployment on Google Cloud Run
+- [ ] Live sales data in dashboard
 
 ### Phase 3 - Advanced Features
-- [ ] AI-powered insights
+- [ ] Affiliate management system
+- [ ] Advanced analytics dashboard
+- [ ] Email notifications
 - [ ] Export functionality
 - [ ] Multi-language support
 - [ ] Mobile app (React Native)
-- [ ] Advanced reporting
+- [ ] AI-powered insights
 
 ## 🤝 Contributing
 

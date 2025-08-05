@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 XMX Corp Dashboard - A modern business dashboard application built with Next.js 15, featuring real-time sales tracking, affiliate management, and comprehensive analytics. The application is designed for XMX Corp to monitor business performance with an intuitive dark-themed interface.
 
+**Note**: This repository contains only the frontend. The backend API (FastAPI/Python) is maintained separately and not committed to this repository.
+
 ## Development Commands
 
 ```bash
@@ -32,9 +34,11 @@ pnpm run check:all    # Run all checks (types + lint)
 - **Styling**: Tailwind CSS v4 with custom dark theme
 - **Language**: TypeScript
 - **Package Manager**: pnpm
+- **Database**: Supabase (PostgreSQL)
+- **Backend API**: FastAPI/Python (maintained separately, not in this repo)
 
 ### Project Structure
-- `/frontend` - Main Next.js application
+- `/frontend` - Main Next.js application (committed to GitHub)
   - `/app` - App Router pages and layouts
     - `/(dashboard)` - Protected dashboard routes with sidebar navigation
     - `/login` - Authentication page
@@ -42,6 +46,7 @@ pnpm run check:all    # Run all checks (types + lint)
     - `/ui` - shadcn/ui components library
   - `/lib` - Utility functions
   - `/public` - Static assets
+- `/backend` - FastAPI webhook API (NOT committed, local development only)
 
 ### Key Architectural Patterns
 
@@ -63,37 +68,44 @@ pnpm run check:all    # Run all checks (types + lint)
 
 ESLint and TypeScript checks are now enabled. Always run `pnpm run check:all` before committing code to ensure quality standards are met.
 
-## Planned Integrations
+## Current Integrations
 
-### Supabase Integration
-- Database and authentication backend
-- Real-time data synchronization
-- Row Level Security (RLS) for data protection
-- MCP (Model Context Protocol) integration for AI-assisted development
+### Supabase Integration ✅
+- Database backend with `sales` table configured
+- Real-time data synchronization ready
+- Row Level Security (RLS) enabled
+- MCP (Model Context Protocol) configured for AI-assisted development
 
-### GitHub Integration
-- Version control and collaboration
-- GitHub Actions for CI/CD
-- MCP integration for repository management
+### GitHub Integration ✅
+- Version control for frontend only
+- Backend excluded via .gitignore
+- MCP integration configured
 
-### Vercel Deployment
-- Production hosting
-- Edge Functions support
-- Environment variables management
+### Vercel Deployment ✅
+- Frontend deployed at https://xmx-system.vercel.app
+- Environment variables ready for Supabase connection
 - Automatic deployments from GitHub
+
+### Backend Deployment (Future)
+- Will be deployed on Google Cloud Run
+- Separate repository and deployment pipeline
+- FastAPI with Python 3.11
 
 ## Development Notes
 
-- The backend directory exists but is currently empty (will house Supabase Edge Functions)
+- The backend directory contains a FastAPI webhook API but is NOT committed to GitHub
+- Backend is for local development only and will be deployed separately on Google Cloud Run
 - Authentication is currently UI-only (will be implemented with Supabase Auth)
-- All data shown in the dashboard is static/mock data (will be replaced with Supabase queries)
+- All data shown in the dashboard is static/mock data (ready to be replaced with Supabase queries)
 - The project uses the Geist font family for consistent typography
 - Dark theme optimized for reduced eye strain during extended use
+- Supabase credentials are configured and ready for frontend integration
 
 ## Current Development Focus
 
-1. Setting up Supabase MCP for database integration
-2. Configuring GitHub MCP for improved development workflow
-3. Preparing Vercel deployment configuration
-4. Implementing real authentication flow
-5. Creating database schema for sales and affiliate data
+1. ✅ Supabase database configured with sales table
+2. ✅ GitHub repository configured (frontend only)
+3. ✅ Frontend deployed on Vercel
+4. 🔄 Integrating frontend with Supabase for real-time data
+5. ⏳ Implementing real authentication flow with Supabase Auth
+6. ⏳ Backend deployment on Google Cloud Run (future)

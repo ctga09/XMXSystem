@@ -70,4 +70,6 @@ __pycache__/
 .Python
 *.so
 .env.local
-backend/.env.local
+
+# Backend - mantido apenas localmente
+/backend/
