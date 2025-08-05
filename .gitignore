@@ -60,3 +60,14 @@ logs/
 
 # Project specific
 TODO.md
+
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.env.local
+backend/.env.local
