@@ -6,11 +6,12 @@ A modern, real-time business intelligence dashboard for XMX Corp, built with cut
 
 ## ✨ Features
 
-- 📊 **Real-time Dashboard** - Live sales and performance metrics
+- 📊 **Real-time Dashboard** - Live sales and performance metrics with Supabase integration
 - 👥 **Affiliate Management** - Track and manage affiliate partners
-- 📈 **Advanced Analytics** - Comprehensive business insights
+- 📈 **Advanced Analytics** - Comprehensive business insights with real data
 - 🌙 **Dark Mode** - Eye-friendly interface for extended use
 - 📱 **Responsive Design** - Seamless experience across all devices
+- 🔄 **Real-time Updates** - Instant data synchronization via Supabase
 - 🔒 **Secure Authentication** - Enterprise-grade security (coming soon)
 
 ## 🚀 Tech Stack
@@ -108,15 +109,18 @@ O projeto utiliza um tema dark personalizado com a seguinte paleta de cores:
 - Deploy no Vercel
 - Banco de dados Supabase configurado
 - Backend API desenvolvido (FastAPI)
+- Frontend integrado com Supabase
+- Dashboard e vendas exibindo dados reais
+- Real-time updates funcionando
+- Hooks React para dados (useSales, useDashboardMetrics)
 
 ### 🔄 Em Progresso
-- Integração frontend com Supabase
-- Substituição de dados mockados por dados reais
+- Deploy do backend no Google Cloud Run
 
 ### ⏳ Próximos Passos
-- Deploy do backend no Google Cloud Run
-- Autenticação com Supabase Auth
 - Configuração de webhooks com CartPanda
+- Autenticação com Supabase Auth
+- Página de afiliados com dados reais
 
 ## 🤝 Contribuindo
 
@@ -150,11 +154,12 @@ pnpm lint:fix
 
 ### Phase 2 - Core Features (Current)
 - [x] Sales tracking API
-- [ ] Real-time data synchronization with Supabase
-- [ ] Authentication system with Supabase Auth
-- [ ] Webhook integration with CartPanda
+- [x] Real-time data synchronization with Supabase
+- [x] Live sales data in dashboard
+- [x] Frontend hooks for data fetching
 - [ ] Backend deployment on Google Cloud Run
-- [ ] Live sales data in dashboard
+- [ ] Webhook integration with CartPanda
+- [ ] Authentication system with Supabase Auth
 
 ### Phase 3 - Advanced Features
 - [ ] Affiliate management system

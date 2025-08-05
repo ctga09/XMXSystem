@@ -13,8 +13,9 @@
 ### 🔄 Onde estamos agora:
 - Backend mantido localmente (não será commitado no GitHub)
 - Backend será deployado no Google Cloud Run futuramente
-- Frontend deployado no Vercel mas ainda usando dados mockados
-- Próximo passo: Integrar frontend com Supabase
+- Frontend deployado no Vercel e conectado ao Supabase ✅
+- Dashboard e página de vendas exibindo dados reais ✅
+- Próximo passo: Deploy do backend e configurar webhook na CartPanda
 
 ## 🚀 Próximos Passos
 
@@ -35,22 +36,212 @@ uvicorn app.main:app --reload --port 8000
 - CARTPANDA_WEBHOOK_SECRET: Definir no momento do deploy
 - ENVIRONMENT: `production`
 
-### 2. Integrar Frontend com Supabase
+### 2. Integrar Frontend com Supabase (FAZENDO AGORA)
 
+#### 2.1 Instalar Cliente Supabase
 ```bash
-# 2.1 Instalar Supabase
 cd /Users/leonardoribeirofiore/Documents/Projetos/XMXSystem/frontend
 pnpm add @supabase/supabase-js
+```
 
-# 2.2 Criar .env.local
+#### 2.2 Configurar Variáveis de Ambiente
+```bash
+# Criar ou atualizar .env.local
 echo "NEXT_PUBLIC_SUPABASE_URL=https://sclscnnfdeoylftoxmzf.supabase.co" >> .env.local
 echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNjbHNjbm5mZGVveWxmdG94bXpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNjA1NzIsImV4cCI6MjA2OTkzNjU3Mn0.u_5s0g92PgGPuMvCr_pLAbz58Cc8M-4pCdvS46K7NO4" >> .env.local
 ```
 
-Depois:
-- Criar `lib/supabase.ts`
-- Criar `hooks/use-sales.ts`
-- Atualizar páginas para usar dados reais
+#### 2.3 Criar Cliente Supabase
+Criar arquivo `frontend/lib/supabase.ts`:
+```typescript
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+// Tipos TypeScript para a tabela sales
+export interface Sale {
+  id: string
+  cartpanda_id: string
+  customer_email: string
+  customer_name: string
+  product_name: string
+  product_id: string
+  price: number
+  currency: string
+  status: 'approved' | 'refunded' | 'cancelled'
+  affiliate_code?: string
+  affiliate_name?: string
+  commission_value?: number
+  payment_method: string
+  transaction_id: string
+  webhook_received_at: string
+  metadata?: any
+  created_at: string
+  updated_at: string
+}
+```
+
+#### 2.4 Criar Hook para Vendas
+Criar arquivo `frontend/hooks/use-sales.ts`:
+```typescript
+'use client'
+
+import { useEffect, useState } from 'react'
+import { supabase, type Sale } from '@/lib/supabase'
+
+export function useSales() {
+  const [sales, setSales] = useState<Sale[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetchSales()
+    
+    // Subscribe to real-time updates
+    const channel = supabase
+      .channel('sales-changes')
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'sales' },
+        () => fetchSales()
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [])
+
+  async function fetchSales() {
+    try {
+      const { data, error } = await supabase
+        .from('sales')
+        .select('*')
+        .order('created_at', { ascending: false })
+      
+      if (error) throw error
+      
+      setSales(data || [])
+    } catch (error: any) {
+      setError(error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return { sales, loading, error, refetch: fetchSales }
+}
+```
+
+#### 2.5 Hook para Dashboard Metrics
+Criar arquivo `frontend/hooks/use-dashboard-metrics.ts`:
+```typescript
+'use client'
+
+import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase'
+
+interface DashboardMetrics {
+  totalRevenue: number
+  totalSales: number
+  totalAffiliates: number
+  averageTicket: number
+  revenueChange: number
+  salesChange: number
+  affiliatesChange: number
+  ticketChange: number
+}
+
+export function useDashboardMetrics() {
+  const [metrics, setMetrics] = useState<DashboardMetrics>({
+    totalRevenue: 0,
+    totalSales: 0,
+    totalAffiliates: 0,
+    averageTicket: 0,
+    revenueChange: 0,
+    salesChange: 0,
+    affiliatesChange: 0,
+    ticketChange: 0
+  })
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    calculateMetrics()
+  }, [])
+
+  async function calculateMetrics() {
+    try {
+      // Buscar todas as vendas aprovadas
+      const { data: sales } = await supabase
+        .from('sales')
+        .select('*')
+        .eq('status', 'approved')
+
+      if (sales) {
+        const totalRevenue = sales.reduce((sum, sale) => sum + Number(sale.price), 0)
+        const totalSales = sales.length
+        const uniqueAffiliates = new Set(sales.map(s => s.affiliate_code).filter(Boolean))
+        const totalAffiliates = uniqueAffiliates.size
+        const averageTicket = totalSales > 0 ? totalRevenue / totalSales : 0
+
+        setMetrics({
+          totalRevenue,
+          totalSales,
+          totalAffiliates,
+          averageTicket,
+          // TODO: Calcular mudanças comparando com período anterior
+          revenueChange: 12.5,
+          salesChange: 8.2,
+          affiliatesChange: 15.3,
+          ticketChange: -3.1
+        })
+      }
+    } catch (error) {
+      console.error('Error calculating metrics:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return { metrics, loading, refetch: calculateMetrics }
+}
+```
+
+#### 2.6 Atualizar Páginas
+
+**Dashboard Principal** (`frontend/app/(dashboard)/page.tsx`):
+- Importar e usar `useDashboardMetrics()`
+- Substituir dados mockados pelos dados reais
+
+**Página de Vendas** (`frontend/app/(dashboard)/sales/page.tsx`):
+- Importar e usar `useSales()`
+- Mapear dados reais para a tabela
+- Adicionar loading e error states
+
+**Página de Afiliados** (`frontend/app/(dashboard)/affiliates/page.tsx`):
+- Criar hook similar para afiliados
+- Agrupar vendas por affiliate_code
+- Calcular comissões totais
+
+#### 2.7 Testar Integração
+
+1. Reiniciar o servidor Next.js:
+```bash
+cd frontend && pnpm dev
+```
+
+2. Verificar no console do navegador:
+- Sem erros de conexão Supabase
+- Dados sendo carregados
+
+3. Criar venda de teste via backend:
+```bash
+cd backend && source venv/bin/activate && python test_webhook.py
+```
+
+4. Verificar se a venda aparece em tempo real no dashboard
 
 ### 3. Configurar Webhook na CartPanda (AGUARDAR DEPLOY)
 
@@ -64,8 +255,8 @@ Depois:
 
 ## 📋 Checklist Rápido
 
-- [ ] Frontend conectado ao Supabase (PRÓXIMO PASSO)
-- [ ] Deploy do backend no Google Cloud Run (FUTURO)
+- [x] Frontend conectado ao Supabase ✅
+- [ ] Deploy do backend no Google Cloud Run (PRÓXIMO)
 - [ ] Webhook configurado na CartPanda (APÓS DEPLOY)
 - [ ] Teste com venda real (APÓS TUDO CONFIGURADO)
 

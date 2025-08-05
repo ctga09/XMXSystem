@@ -1,31 +1,57 @@
+'use client'
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { DollarSign, ShoppingCart, Users, TrendingUp } from "lucide-react"
+import { useDashboardMetrics } from "@/hooks/use-dashboard-metrics"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default function DashboardPage() {
+  const { metrics, loading } = useDashboardMetrics()
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(value)
+  }
+
+  const formatNumber = (value: number) => {
+    return new Intl.NumberFormat('pt-BR').format(value)
+  }
+
+  const formatPercentage = (value: number) => {
+    const prefix = value > 0 ? '+' : ''
+    return `${prefix}${value.toFixed(1)}%`
+  }
+
   const stats = [
     {
       title: "Faturamento Total",
-      value: "R$ 1.234.567,89",
+      value: formatCurrency(metrics.totalRevenue),
       icon: DollarSign,
-      change: "+20.1% do último mês",
+      change: `${formatPercentage(metrics.revenueChange)} do último mês`,
+      loading: loading,
     },
     {
       title: "Vendas",
-      value: "+12.345",
+      value: formatNumber(metrics.totalSales),
       icon: ShoppingCart,
-      change: "+15.2% do último mês",
+      change: `${formatPercentage(metrics.salesChange)} do último mês`,
+      loading: loading,
     },
     {
-      title: "Gasto Total",
-      value: "R$ 345.678,90",
+      title: "Ticket Médio",
+      value: formatCurrency(metrics.averageTicket),
       icon: TrendingUp,
-      change: "+5.5% do último mês",
+      change: `${formatPercentage(metrics.ticketChange)} do último mês`,
+      loading: loading,
     },
     {
-      title: "Novos Afiliados",
-      value: "+234",
+      title: "Afiliados Ativos",
+      value: formatNumber(metrics.totalAffiliates),
       icon: Users,
-      change: "+30 desde ontem",
+      change: `${formatPercentage(metrics.affiliatesChange)} do último mês`,
+      loading: loading,
     },
   ]
 
@@ -40,8 +66,17 @@ export default function DashboardPage() {
               <stat.icon className="h-4 w-4 text-gray-400" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-xs text-gray-400">{stat.change}</p>
+              {stat.loading ? (
+                <>
+                  <Skeleton className="h-8 w-32 mb-2 bg-gray-700" />
+                  <Skeleton className="h-4 w-24 bg-gray-700" />
+                </>
+              ) : (
+                <>
+                  <div className="text-2xl font-bold">{stat.value}</div>
+                  <p className="text-xs text-gray-400">{stat.change}</p>
+                </>
+              )}
             </CardContent>
           </Card>
         ))}

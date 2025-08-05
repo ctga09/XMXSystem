@@ -1,9 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { CalendarIcon, Search, Filter } from "lucide-react"
 import type { DateRange } from "react-day-picker"
-import { addDays, format } from "date-fns"
+import { format } from "date-fns"
+import { ptBR } from "date-fns/locale"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -20,66 +21,89 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar } from "@/components/ui/calendar"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-
-const salesData = [
-  {
-    id: 1,
-    buyerName: "Ana Souza",
-    product: "Produto Alpha",
-    date: "2024-07-20",
-    platform: "CartPanda",
-    value: 199.9,
-    status: "Completo",
-  },
-  {
-    id: 2,
-    buyerName: "Bruno Lima",
-    product: "Produto Beta",
-    date: "2024-07-20",
-    platform: "BuyGoods",
-    value: 249.0,
-    status: "Completo",
-  },
-  {
-    id: 3,
-    buyerName: "Carla Dias",
-    product: "Produto Gamma",
-    date: "2024-07-19",
-    platform: "ClickBank",
-    value: 99.5,
-    status: "Pendente",
-  },
-  {
-    id: 4,
-    buyerName: "Daniel Alves",
-    product: "Produto Alpha",
-    date: "2024-07-19",
-    platform: "CartPanda",
-    value: 199.9,
-    status: "Reembolsado",
-  },
-  {
-    id: 5,
-    buyerName: "Eduarda Costa",
-    product: "Produto Delta",
-    date: "2024-07-18",
-    platform: "BuyGoods",
-    value: 399.0,
-    status: "Completo",
-  },
-]
+import { Skeleton } from "@/components/ui/skeleton"
+import { useSales } from "@/hooks/use-sales"
 
 export default function SalesPage() {
-  const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(2024, 6, 1),
-    to: addDays(new Date(2024, 6, 20), 20),
-  })
+  const { sales, loading, error } = useSales()
+  const [searchQuery, setSearchQuery] = useState("")
+  const [date, setDate] = useState<DateRange | undefined>()
+  
+  // Extrair métodos de pagamento únicos
+  const paymentMethods = useMemo(() => {
+    const methods = new Set(sales.map(sale => sale.payment_method))
+    return Array.from(methods)
+  }, [sales])
+  
+  const [selectedMethods, setSelectedMethods] = useState<string[]>(paymentMethods)
 
-  const platforms = ["CartPanda", "BuyGoods", "ClickBank"]
-  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(platforms)
+  const handleMethodChange = (method: string) => {
+    setSelectedMethods((prev) => 
+      prev.includes(method) 
+        ? prev.filter((m) => m !== method) 
+        : [...prev, method]
+    )
+  }
 
-  const handlePlatformChange = (platform: string) => {
-    setSelectedPlatforms((prev) => (prev.includes(platform) ? prev.filter((p) => p !== platform) : [...prev, platform]))
+  // Filtrar vendas
+  const filteredSales = useMemo(() => {
+    return sales.filter(sale => {
+      // Filtro de busca
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase()
+        if (!sale.customer_name.toLowerCase().includes(query) && 
+            !sale.product_name.toLowerCase().includes(query) &&
+            !sale.customer_email.toLowerCase().includes(query)) {
+          return false
+        }
+      }
+
+      // Filtro de data
+      if (date?.from || date?.to) {
+        const saleDate = new Date(sale.created_at)
+        if (date.from && saleDate < date.from) return false
+        if (date.to && saleDate > date.to) return false
+      }
+
+      // Filtro de método de pagamento
+      if (!selectedMethods.includes(sale.payment_method)) {
+        return false
+      }
+
+      return true
+    })
+  }, [sales, searchQuery, date, selectedMethods])
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(value)
+  }
+
+  const formatDate = (dateString: string) => {
+    return format(new Date(dateString), "dd/MM/yyyy HH:mm", { locale: ptBR })
+  }
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'approved':
+        return <Badge className="bg-green-600/80 text-white">Aprovado</Badge>
+      case 'refunded':
+        return <Badge className="bg-red-600/80 text-white">Reembolsado</Badge>
+      case 'cancelled':
+        return <Badge className="bg-gray-600/80 text-white">Cancelado</Badge>
+      default:
+        return <Badge className="bg-yellow-500/80 text-black">Pendente</Badge>
+    }
+  }
+
+  if (error) {
+    return (
+      <div className="p-8 text-center">
+        <p className="text-red-500">Erro ao carregar vendas: {error}</p>
+      </div>
+    )
   }
 
   return (
@@ -90,8 +114,10 @@ export default function SalesPage() {
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
           <Input
             type="search"
-            placeholder="Pesquisar por produto ou comprador..."
+            placeholder="Pesquisar por produto, comprador ou email..."
             className="pl-8 w-full bg-[#1A1920] border-[#2A2833]"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         <Popover>
@@ -104,10 +130,10 @@ export default function SalesPage() {
               {date?.from ? (
                 date.to ? (
                   <>
-                    {format(date.from, "LLL dd, y")} - {format(date.to, "LLL dd, y")}
+                    {format(date.from, "dd/MM/yy")} - {format(date.to, "dd/MM/yy")}
                   </>
                 ) : (
-                  format(date.from, "LLL dd, y")
+                  format(date.from, "dd/MM/yyyy")
                 )
               ) : (
                 <span>Selecione a data</span>
@@ -131,19 +157,19 @@ export default function SalesPage() {
               variant="outline"
               className="w-full md:w-auto bg-[#1A1920] border-[#2A2833] hover:bg-[#2A2833] hover:text-white"
             >
-              <Filter className="mr-2 h-4 w-4" /> Plataforma
+              <Filter className="mr-2 h-4 w-4" /> Pagamento
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="bg-[#1A1920] border-[#2A2833] text-white">
-            <DropdownMenuLabel>Filtrar por plataforma</DropdownMenuLabel>
+            <DropdownMenuLabel>Filtrar por método</DropdownMenuLabel>
             <DropdownMenuSeparator className="bg-[#2A2833]" />
-            {platforms.map((platform) => (
+            {paymentMethods.map((method) => (
               <DropdownMenuCheckboxItem
-                key={platform}
-                checked={selectedPlatforms.includes(platform)}
-                onCheckedChange={() => handlePlatformChange(platform)}
+                key={method}
+                checked={selectedMethods.includes(method)}
+                onCheckedChange={() => handleMethodChange(method)}
               >
-                {platform}
+                {method}
               </DropdownMenuCheckboxItem>
             ))}
           </DropdownMenuContent>
@@ -154,48 +180,65 @@ export default function SalesPage() {
           <Table>
             <TableHeader>
               <TableRow className="border-b-[#2A2833] hover:bg-transparent">
-                <TableHead className="text-white hidden sm:table-cell">Nome</TableHead>
+                <TableHead className="text-white">Cliente</TableHead>
                 <TableHead className="text-white">Produto</TableHead>
                 <TableHead className="text-white hidden md:table-cell">Data</TableHead>
-                <TableHead className="text-white hidden lg:table-cell">Plataforma</TableHead>
+                <TableHead className="text-white hidden lg:table-cell">Afiliado</TableHead>
                 <TableHead className="text-white">Valor</TableHead>
                 <TableHead className="text-white">Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {salesData.map((sale) => (
-                <TableRow key={sale.id} className="border-b-[#2A2833] hover:bg-[#2A2833]/50">
-                  <TableCell className="font-medium text-gray-100 hidden sm:table-cell">{sale.buyerName}</TableCell>
-                  <TableCell className="font-medium text-gray-100">{sale.product}</TableCell>
-                  <TableCell className="hidden md:table-cell text-gray-300">{sale.date}</TableCell>
-                  <TableCell className="hidden lg:table-cell text-gray-300">{sale.platform}</TableCell>
-                  <TableCell className="text-gray-300">R$ {sale.value.toFixed(2)}</TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={
-                        sale.status === "Completo"
-                          ? "default"
-                          : sale.status === "Pendente"
-                            ? "secondary"
-                            : "destructive"
-                      }
-                      className={
-                        sale.status === "Completo"
-                          ? "bg-green-600/80 text-white"
-                          : sale.status === "Pendente"
-                            ? "bg-yellow-500/80 text-black"
-                            : "bg-red-600/80 text-white"
-                      }
-                    >
-                      {sale.status}
-                    </Badge>
+              {loading ? (
+                // Loading skeleton
+                Array.from({ length: 5 }).map((_, i) => (
+                  <TableRow key={i} className="border-b-[#2A2833]">
+                    <TableCell><Skeleton className="h-4 w-32 bg-gray-700" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-40 bg-gray-700" /></TableCell>
+                    <TableCell className="hidden md:table-cell"><Skeleton className="h-4 w-24 bg-gray-700" /></TableCell>
+                    <TableCell className="hidden lg:table-cell"><Skeleton className="h-4 w-20 bg-gray-700" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-20 bg-gray-700" /></TableCell>
+                    <TableCell><Skeleton className="h-6 w-24 bg-gray-700" /></TableCell>
+                  </TableRow>
+                ))
+              ) : filteredSales.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center py-8 text-gray-400">
+                    Nenhuma venda encontrada
                   </TableCell>
                 </TableRow>
-              ))}
+              ) : (
+                filteredSales.map((sale) => (
+                  <TableRow key={sale.id} className="border-b-[#2A2833] hover:bg-[#2A2833]/50">
+                    <TableCell>
+                      <div>
+                        <p className="font-medium text-gray-100">{sale.customer_name}</p>
+                        <p className="text-sm text-gray-400">{sale.customer_email}</p>
+                      </div>
+                    </TableCell>
+                    <TableCell className="font-medium text-gray-100">{sale.product_name}</TableCell>
+                    <TableCell className="hidden md:table-cell text-gray-300">
+                      {formatDate(sale.created_at)}
+                    </TableCell>
+                    <TableCell className="hidden lg:table-cell text-gray-300">
+                      {sale.affiliate_name || '-'}
+                    </TableCell>
+                    <TableCell className="text-gray-300">{formatCurrency(sale.price)}</TableCell>
+                    <TableCell>{getStatusBadge(sale.status)}</TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </CardContent>
       </Card>
+      <div className="mt-4 text-sm text-gray-400">
+        {loading ? (
+          <Skeleton className="h-4 w-48 bg-gray-700" />
+        ) : (
+          <p>Total de {filteredSales.length} vendas encontradas</p>
+        )}
+      </div>
     </div>
   )
 }

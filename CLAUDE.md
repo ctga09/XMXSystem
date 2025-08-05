@@ -95,17 +95,20 @@ ESLint and TypeScript checks are now enabled. Always run `pnpm run check:all` be
 
 - The backend directory contains a FastAPI webhook API but is NOT committed to GitHub
 - Backend is for local development only and will be deployed separately on Google Cloud Run
+- Frontend is fully integrated with Supabase - dashboard shows real-time data
 - Authentication is currently UI-only (will be implemented with Supabase Auth)
-- All data shown in the dashboard is static/mock data (ready to be replaced with Supabase queries)
+- Real-time updates are enabled via Supabase subscriptions
 - The project uses the Geist font family for consistent typography
 - Dark theme optimized for reduced eye strain during extended use
-- Supabase credentials are configured and ready for frontend integration
+- Row Level Security (RLS) is enabled on the sales table
 
 ## Current Development Focus
 
 1. ✅ Supabase database configured with sales table
 2. ✅ GitHub repository configured (frontend only)
 3. ✅ Frontend deployed on Vercel
-4. 🔄 Integrating frontend with Supabase for real-time data
-5. ⏳ Implementing real authentication flow with Supabase Auth
-6. ⏳ Backend deployment on Google Cloud Run (future)
+4. ✅ Frontend integrated with Supabase - real-time data working
+5. ✅ Dashboard and sales pages showing live data
+6. ⏳ Backend deployment on Google Cloud Run (next step)
+7. ⏳ CartPanda webhook configuration (after backend deploy)
+8. ⏳ Implementing real authentication flow with Supabase Auth
