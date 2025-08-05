@@ -106,21 +106,26 @@ O projeto utiliza um tema dark personalizado com a seguinte paleta de cores:
 - Sistema de navegação com sidebar
 - Páginas de vendas e afiliados
 - Tema dark consistente
-- Deploy no Vercel
-- Banco de dados Supabase configurado
-- Backend API desenvolvido (FastAPI)
+- Deploy no Vercel com variáveis de ambiente configuradas
+- Banco de dados Supabase configurado com RLS
+- Backend API desenvolvido (FastAPI/Python)
 - Frontend integrado com Supabase
 - Dashboard e vendas exibindo dados reais
 - Real-time updates funcionando
 - Hooks React para dados (useSales, useDashboardMetrics)
+- Webhook endpoint implementado e testado
+- Integração com CartPanda funcionando (formato real)
+- Sistema de logs para monitorar webhooks
+- Teste local com ngrok configurado
 
 ### 🔄 Em Progresso
 - Deploy do backend no Google Cloud Run
 
 ### ⏳ Próximos Passos
-- Configuração de webhooks com CartPanda
+- Configurar URL de produção do webhook na CartPanda
 - Autenticação com Supabase Auth
 - Página de afiliados com dados reais
+- Relatórios e analytics avançados
 
 ## 🤝 Contribuindo
 
@@ -140,6 +145,9 @@ pnpm lint:fix
 - Always run verification scripts before committing
 - The project uses pnpm as the package manager
 - Claude Code configuration available in `CLAUDE.md`
+- Backend is NOT committed to GitHub (local development only)
+- Environment variables must be configured in Vercel dashboard
+- Webhook data is saved with `CP_` prefix to identify CartPanda orders
 
 ## 🗺️ Roadmap
 
@@ -152,23 +160,29 @@ pnpm lint:fix
 - [x] Frontend deployment on Vercel
 - [x] Backend API development (FastAPI)
 
-### Phase 2 - Core Features (Current)
-- [x] Sales tracking API
+### Phase 2 - Core Features ✅
+- [x] Sales tracking API with FastAPI
 - [x] Real-time data synchronization with Supabase
 - [x] Live sales data in dashboard
 - [x] Frontend hooks for data fetching
-- [ ] Backend deployment on Google Cloud Run
-- [ ] Webhook integration with CartPanda
-- [ ] Authentication system with Supabase Auth
+- [x] Webhook integration with CartPanda
+- [x] Webhook logging and monitoring system
+- [x] Ngrok setup for local testing
 
-### Phase 3 - Advanced Features
-- [ ] Affiliate management system
+### Phase 3 - Production Deployment (Current)
+- [ ] Backend deployment on Google Cloud Run
+- [ ] Production webhook URL configuration
+- [ ] Authentication system with Supabase Auth
+- [ ] SSL certificates and security hardening
+
+### Phase 4 - Advanced Features
+- [ ] Affiliate management system with real data
 - [ ] Advanced analytics dashboard
 - [ ] Email notifications
-- [ ] Export functionality
+- [ ] Export functionality (CSV, PDF)
 - [ ] Multi-language support
 - [ ] Mobile app (React Native)
-- [ ] AI-powered insights
+- [ ] AI-powered insights and predictions
 
 ## 🤝 Contributing
 
