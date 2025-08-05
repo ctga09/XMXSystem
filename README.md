@@ -1,14 +1,23 @@
-# XMX Corp Dashboard
+# XMX Corp Dashboard 🚀
 
-Sistema de dashboard empresarial para gerenciamento de vendas e afiliados da XMX Corp.
+A modern, real-time business intelligence dashboard for XMX Corp, built with cutting-edge technologies to provide comprehensive sales tracking, affiliate management, and performance analytics.
 
-## 🚀 Tecnologias
+## ✨ Features
 
-- **Next.js 15** - Framework React com App Router
-- **TypeScript** - Tipagem estática
-- **Tailwind CSS v4** - Estilização utility-first
-- **shadcn/ui** - Componentes UI modernos
-- **pnpm** - Gerenciador de pacotes rápido
+- 📊 **Real-time Dashboard** - Live sales and performance metrics
+- 👥 **Affiliate Management** - Track and manage affiliate partners
+- 📈 **Advanced Analytics** - Comprehensive business insights
+- 🌙 **Dark Mode** - Eye-friendly interface for extended use
+- 📱 **Responsive Design** - Seamless experience across all devices
+- 🔒 **Secure Authentication** - Enterprise-grade security (coming soon)
+
+## 🚀 Tech Stack
+
+- **[Next.js 15](https://nextjs.org/)** - React framework with App Router
+- **[TypeScript](https://www.typescriptlang.org/)** - Type-safe development
+- **[Tailwind CSS v4](https://tailwindcss.com/)** - Utility-first styling
+- **[shadcn/ui](https://ui.shadcn.com/)** - Modern UI components
+- **[pnpm](https://pnpm.io/)** - Fast, disk space efficient package manager
 
 ## 📋 Pré-requisitos
 
@@ -100,9 +109,71 @@ pnpm check:all
 pnpm lint:fix
 ```
 
-## 📝 Notas Importantes
+## 📝 Important Notes
 
-- ESLint e TypeScript checks estão habilitados
-- Utilize os scripts de verificação antes de fazer commits
-- O projeto usa pnpm como gerenciador de pacotes
-- Configuração para Claude Code disponível em `CLAUDE.md`
+- ESLint and TypeScript checks are enabled
+- Always run verification scripts before committing
+- The project uses pnpm as the package manager
+- Claude Code configuration available in `CLAUDE.md`
+
+## 🗺️ Roadmap
+
+### Phase 1 - Foundation (Current)
+- [x] Project setup with Next.js 15
+- [x] UI component library integration
+- [x] Dark theme implementation
+- [x] Basic routing structure
+- [ ] Supabase integration
+- [ ] Authentication system
+
+### Phase 2 - Core Features
+- [ ] Real-time data synchronization
+- [ ] Sales tracking API
+- [ ] Affiliate management system
+- [ ] Analytics dashboard
+- [ ] Email notifications
+
+### Phase 3 - Advanced Features
+- [ ] AI-powered insights
+- [ ] Export functionality
+- [ ] Multi-language support
+- [ ] Mobile app (React Native)
+- [ ] Advanced reporting
+
+## 🤝 Contributing
+
+1. Check code quality before committing:
+```bash
+pnpm check:all
+```
+
+2. Fix formatting issues:
+```bash
+pnpm lint:fix
+```
+
+3. Follow the commit message convention:
+```
+feat: add new feature
+fix: resolve bug
+docs: update documentation
+style: formatting changes
+refactor: code improvements
+test: add tests
+chore: maintenance tasks
+```
+
+## 📄 License
+
+This project is proprietary software owned by XMX Corp. All rights reserved.
+
+## 🙏 Acknowledgments
+
+- Built with ❤️ using Next.js and shadcn/ui
+- Special thanks to the open-source community
+
+---
+
+<p align="center">
+  <strong>XMX Corp Dashboard</strong> - Empowering Business Intelligence
+</p>
