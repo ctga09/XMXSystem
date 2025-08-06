@@ -13,9 +13,9 @@ A modern, real-time business intelligence platform for XMX Corp, featuring compr
 XMX System is built as a modern microservices architecture with separated frontend and backend services:
 
 ```
-┌─────────────────────────────────────────────────────────────┐
+┌───────────────────────────────────────────────────────────────┐
 │                         XMX System                           │
-├───────────────────────────┬─────────────────────────────────┤
+├───────────────────────────┬───────────────────────────────────┤
 │       Frontend            │           Backend                │
 │   Next.js Dashboard       │       FastAPI Webhook           │
 │    (Vercel Deploy)        │     (Cloud Run Deploy)          │
@@ -23,7 +23,7 @@ XMX System is built as a modern microservices architecture with separated fronte
 │   React + TypeScript      │      Python 3.11                │
 │   Tailwind CSS + shadcn   │      Async Processing           │
 │   Real-time Updates       │      CartPanda Integration      │
-└───────────────────────────┴─────────────────────────────────┘
+└───────────────────────────┴───────────────────────────────────┘
                             │
                     ┌───────┴────────┐
                     │    Supabase    │
@@ -37,6 +37,7 @@ XMX System is built as a modern microservices architecture with separated fronte
 - **Frontend Dashboard**: [https://xmx-system.vercel.app](https://xmx-system.vercel.app)
 - **Backend API**: [https://xmx-backend-aquzld6ywq-uc.a.run.app](https://xmx-backend-aquzld6ywq-uc.a.run.app)
 - **API Documentation**: [https://xmx-backend-aquzld6ywq-uc.a.run.app/docs](https://xmx-backend-aquzld6ywq-uc.a.run.app/docs)
+- **Webhook Logs Interface**: [https://xmx-backend-aquzld6ywq-uc.a.run.app/webhooks/logs](https://xmx-backend-aquzld6ywq-uc.a.run.app/webhooks/logs)
 
 ## 📦 Repository Structure
 
@@ -106,6 +107,11 @@ uvicorn app.main:app --reload
 
 - 📊 **Real-time Dashboard** - Live sales metrics and KPIs
 - 💳 **Payment Processing** - CartPanda webhook integration
+- 📋 **Advanced Webhook Logs** - Complete history with filtering
+  - Date range picker with visual calendar
+  - Product search and filtering
+  - Real-time statistics dashboard
+  - Full webhook data preservation
 - 👥 **Affiliate Management** - Track partner performance
 - 📈 **Analytics** - Comprehensive business insights
 - 🔄 **Live Updates** - Real-time data synchronization
@@ -207,7 +213,13 @@ chore: maintenance
 - CI/CD pipeline
 - Production webhooks
 
-### ⏳ Phase 4 - Advanced Features (In Progress)
+### ✅ Phase 4 - Enhanced Logging (Completed)
+- Webhook logs persistence in Supabase
+- Advanced filtering with date range picker
+- Product search capabilities
+- Real-time statistics dashboard
+
+### ⏳ Phase 5 - Advanced Features (In Progress)
 - [ ] User authentication (Supabase Auth)
 - [ ] Advanced analytics dashboard
 - [ ] Export functionality
