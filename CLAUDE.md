@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 XMX Corp Dashboard - A modern business dashboard application built with Next.js 15, featuring real-time sales tracking, affiliate management, and comprehensive analytics. The application is designed for XMX Corp to monitor business performance with an intuitive dark-themed interface.
 
-**Note**: This repository contains only the frontend. The backend API (FastAPI/Python) is maintained separately and not committed to this repository.
+**Note**: This repository contains only the frontend. The backend API (FastAPI/Python) is maintained in a separate repository: [XMXSystem-Backend](https://github.com/ctga09/XMXSystem-Backend).
 
 ## Development Commands
 
@@ -27,10 +27,11 @@ pnpm run type:check   # Check TypeScript types
 pnpm run check:all    # Run all checks (types + lint)
 ```
 
-### Backend (FastAPI)
+### Backend (FastAPI - Separate Repository)
+The backend is maintained in a separate repository: [XMXSystem-Backend](https://github.com/ctga09/XMXSystem-Backend)
+
 ```bash
-# Backend commands (run from backend/ directory)
-cd backend
+# Backend commands (run from backend repository)
 source venv/bin/activate           # Activate virtual environment
 pip install -r requirements.txt    # Install dependencies
 uvicorn app.main:app --reload     # Start development server (port 8000)
@@ -55,7 +56,9 @@ ngrok http 8000                   # Create public URL for webhook testing
 - **Backend API**: FastAPI/Python (maintained separately, not in this repo)
 
 ### Project Structure
-- `/frontend` - Main Next.js application (committed to GitHub)
+
+**Frontend Repository** (This repository)
+- `/frontend` - Main Next.js application
   - `/app` - App Router pages and layouts
     - `/(dashboard)` - Protected dashboard routes with sidebar navigation
     - `/login` - Authentication page
@@ -63,7 +66,11 @@ ngrok http 8000                   # Create public URL for webhook testing
     - `/ui` - shadcn/ui components library
   - `/lib` - Utility functions
   - `/public` - Static assets
-- `/backend` - FastAPI webhook API (NOT committed, local development only)
+
+**Backend Repository** ([XMXSystem-Backend](https://github.com/ctga09/XMXSystem-Backend))
+- FastAPI webhook processor
+- Python 3.11 with async support
+- Supabase integration for data persistence
 
 ### Key Architectural Patterns
 
@@ -111,12 +118,15 @@ ESLint and TypeScript checks are now enabled. Always run `pnpm run check:all` be
 - Successfully receiving and processing order events
 - Tested with ngrok for local development
 
-### Backend API (Local Development) ✅
+### Backend API ✅
 - FastAPI with Python 3.11
+- Separate repository: [XMXSystem-Backend](https://github.com/ctga09/XMXSystem-Backend)
 - Webhook endpoint: `/webhook/cartpanda`
 - Visual logs interface: `/webhooks/logs`
 - Health check: `/health`
 - Swagger docs: `/docs`
+- All webhook bugs fixed (Decimal serialization, transaction_id handling)
+- Successfully processing real CartPanda webhooks
 
 ### Backend Deployment (Pending)
 - Will be deployed on Google Cloud Run
@@ -125,7 +135,7 @@ ESLint and TypeScript checks are now enabled. Always run `pnpm run check:all` be
 
 ## Development Notes
 
-- The backend directory contains a fully functional FastAPI webhook API (NOT committed to GitHub)
+- Backend is maintained in a separate repository: [XMXSystem-Backend](https://github.com/ctga09/XMXSystem-Backend)
 - Backend successfully tested with CartPanda webhooks using ngrok
 - Frontend is fully integrated with Supabase - dashboard shows real-time data
 - Webhook data is saved with `CP_` prefix to identify CartPanda orders
@@ -134,6 +144,7 @@ ESLint and TypeScript checks are now enabled. Always run `pnpm run check:all` be
 - The project uses the Geist font family for consistent typography
 - Dark theme optimized for reduced eye strain during extended use
 - Row Level Security (RLS) is enabled with proper policies for service role
+- All webhook integration bugs have been resolved and tested
 
 ## Environment Variables
 
@@ -158,7 +169,7 @@ Environment variables must be configured in Vercel dashboard for deployment.
 
 ### ✅ Completed
 1. Supabase database with sales table and RLS policies
-2. GitHub repository configured (frontend only)
+2. GitHub repositories configured (frontend and backend separated)
 3. Frontend deployed on Vercel with environment variables
 4. Frontend integrated with Supabase - real-time data working
 5. Dashboard and sales pages showing live data
@@ -166,6 +177,8 @@ Environment variables must be configured in Vercel dashboard for deployment.
 7. CartPanda webhook integration tested with real data
 8. Webhook logging system for debugging
 9. Adapted models for CartPanda's specific payload format
+10. Fixed all webhook bugs (Decimal serialization, transaction_id handling)
+11. Backend repository created: [XMXSystem-Backend](https://github.com/ctga09/XMXSystem-Backend)
 
 ### ⏳ Next Steps
 1. Deploy backend on Google Cloud Run

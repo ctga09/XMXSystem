@@ -24,9 +24,10 @@ A modern, real-time business intelligence dashboard for XMX Corp, built with cut
 - **[pnpm](https://pnpm.io/)** - Fast, disk space efficient package manager
 - **[Supabase](https://supabase.com/)** - Database and real-time subscriptions
 
-### Backend (Separate Project - Not in this repo)
+### Backend (Separate Repository)
 - **[FastAPI](https://fastapi.tiangolo.com/)** - Modern Python web framework
 - **[Python 3.11](https://www.python.org/)** - Backend runtime
+- **Repository**: [XMXSystem-Backend](https://github.com/ctga09/XMXSystem-Backend)
 - **Google Cloud Run** - Serverless deployment (planned)
 
 ## 📋 Pré-requisitos
@@ -72,23 +73,26 @@ pnpm check:all          # Executa todas as verificações
 
 ## 📁 Estrutura do Projeto
 
+### Frontend (Este repositório)
 ```
 XMXSystem/
-├── frontend/               # Aplicação Next.js (commitado no GitHub)
-│   ├── app/               # App Router
-│   │   ├── (dashboard)/   # Rotas do dashboard
-│   │   │   ├── affiliates/# Página de afiliados
-│   │   │   ├── sales/     # Página de vendas
-│   │   │   └── page.tsx   # Dashboard principal
-│   │   └── login/         # Página de login
-│   ├── components/        # Componentes reutilizáveis
-│   │   └── ui/           # Componentes shadcn/ui
-│   ├── lib/              # Utilitários
-│   └── public/           # Assets estáticos
-└── backend/              # API FastAPI (NÃO commitado - desenvolvimento local)
+└── frontend/               # Aplicação Next.js
+    ├── app/               # App Router
+    │   ├── (dashboard)/   # Rotas do dashboard
+    │   │   ├── affiliates/# Página de afiliados
+    │   │   ├── sales/     # Página de vendas
+    │   │   └── page.tsx   # Dashboard principal
+    │   └── login/         # Página de login
+    ├── components/        # Componentes reutilizáveis
+    │   └── ui/           # Componentes shadcn/ui
+    ├── lib/              # Utilitários
+    └── public/           # Assets estáticos
 ```
 
-**Nota**: O diretório `/backend` está no `.gitignore` e não é versionado neste repositório.
+### Backend (Repositório separado)
+- **Repository**: [XMXSystem-Backend](https://github.com/ctga09/XMXSystem-Backend)
+- **Tech**: FastAPI + Python 3.11
+- **Deploy**: Google Cloud Run (planejado)
 
 ## 🎨 Tema e Design
 
@@ -117,6 +121,9 @@ O projeto utiliza um tema dark personalizado com a seguinte paleta de cores:
 - Integração com CartPanda funcionando (formato real)
 - Sistema de logs para monitorar webhooks
 - Teste local com ngrok configurado
+- Backend separado em repositório próprio
+- Todos os bugs de webhook corrigidos (Decimal, transaction_id)
+- Integração com CartPanda 100% funcional
 
 ### 🔄 Em Progresso
 - Deploy do backend no Google Cloud Run
@@ -145,9 +152,11 @@ pnpm lint:fix
 - Always run verification scripts before committing
 - The project uses pnpm as the package manager
 - Claude Code configuration available in `CLAUDE.md`
-- Backend is NOT committed to GitHub (local development only)
+- Backend has its own repository: [XMXSystem-Backend](https://github.com/ctga09/XMXSystem-Backend)
 - Environment variables must be configured in Vercel dashboard
 - Webhook data is saved with `CP_` prefix to identify CartPanda orders
+- All webhook integration bugs have been fixed and tested
+- Repository separation completed on January 5, 2025
 
 ## 🗺️ Roadmap
 
