@@ -1,237 +1,227 @@
-# XMX Corp Dashboard 🚀
+# XMX System 🚀
 
-A modern, real-time business intelligence dashboard for XMX Corp, built with cutting-edge technologies to provide comprehensive sales tracking, affiliate management, and performance analytics.
+[![Frontend](https://img.shields.io/badge/Frontend-Next.js%2015-black.svg)](https://github.com/ctga09/XMXSystem)
+[![Backend](https://img.shields.io/badge/Backend-FastAPI-green.svg)](https://github.com/ctga09/XMXSystem-Backend)
+[![Database](https://img.shields.io/badge/Database-Supabase-3ECF8E.svg)](https://supabase.com)
+[![Frontend Deploy](https://img.shields.io/badge/Frontend-Vercel-black.svg)](https://xmx-system.vercel.app)
+[![Backend Deploy](https://img.shields.io/badge/Backend-Cloud%20Run-4285F4.svg)](https://xmx-backend-aquzld6ywq-uc.a.run.app)
 
-🔗 **Live Demo**: [https://xmx-system.vercel.app](https://xmx-system.vercel.app)
+A modern, real-time business intelligence platform for XMX Corp, featuring comprehensive sales tracking, affiliate management, and performance analytics.
 
-## ✨ Features
+## 🏗️ Architecture Overview
 
-- 📊 **Real-time Dashboard** - Live sales and performance metrics with Supabase integration
-- 👥 **Affiliate Management** - Track and manage affiliate partners
-- 📈 **Advanced Analytics** - Comprehensive business insights with real data
-- 🌙 **Dark Mode** - Eye-friendly interface for extended use
-- 📱 **Responsive Design** - Seamless experience across all devices
-- 🔄 **Real-time Updates** - Instant data synchronization via Supabase
-- 🔒 **Secure Authentication** - Enterprise-grade security (coming soon)
+XMX System is built as a modern microservices architecture with separated frontend and backend services:
 
-## 🚀 Tech Stack
+```
+┌─────────────────────────────────────────────────────────────┐
+│                         XMX System                           │
+├───────────────────────────┬─────────────────────────────────┤
+│       Frontend            │           Backend                │
+│   Next.js Dashboard       │       FastAPI Webhook           │
+│    (Vercel Deploy)        │     (Cloud Run Deploy)          │
+│                           │                                  │
+│   React + TypeScript      │      Python 3.11                │
+│   Tailwind CSS + shadcn   │      Async Processing           │
+│   Real-time Updates       │      CartPanda Integration      │
+└───────────────────────────┴─────────────────────────────────┘
+                            │
+                    ┌───────┴────────┐
+                    │    Supabase    │
+                    │   PostgreSQL   │
+                    │   Real-time    │
+                    └────────────────┘
+```
+
+## 🔗 Production URLs
+
+- **Frontend Dashboard**: [https://xmx-system.vercel.app](https://xmx-system.vercel.app)
+- **Backend API**: [https://xmx-backend-aquzld6ywq-uc.a.run.app](https://xmx-backend-aquzld6ywq-uc.a.run.app)
+- **API Documentation**: [https://xmx-backend-aquzld6ywq-uc.a.run.app/docs](https://xmx-backend-aquzld6ywq-uc.a.run.app/docs)
+
+## 📦 Repository Structure
+
+This project is organized as a monorepo with separated backend service:
 
 ### Frontend (This Repository)
-- **[Next.js 15](https://nextjs.org/)** - React framework with App Router
-- **[TypeScript](https://www.typescriptlang.org/)** - Type-safe development
-- **[Tailwind CSS v4](https://tailwindcss.com/)** - Utility-first styling
-- **[shadcn/ui](https://ui.shadcn.com/)** - Modern UI components
-- **[pnpm](https://pnpm.io/)** - Fast, disk space efficient package manager
-- **[Supabase](https://supabase.com/)** - Database and real-time subscriptions
-
-### Backend (Separate Repository)
-- **[FastAPI](https://fastapi.tiangolo.com/)** - Modern Python web framework
-- **[Python 3.11](https://www.python.org/)** - Backend runtime
-- **Repository**: [XMXSystem-Backend](https://github.com/ctga09/XMXSystem-Backend)
-- **Production URL**: [https://xmx-backend-aquzld6ywq-uc.a.run.app](https://xmx-backend-aquzld6ywq-uc.a.run.app)
-- **Google Cloud Run** - Serverless deployment with auto-scaling
-
-## 📋 Pré-requisitos
-
-- Node.js 18.0 ou superior
-- pnpm instalado globalmente (`npm install -g pnpm`)
-
-## 🔧 Instalação
-
-1. Clone o repositório:
-```bash
-git clone [seu-repositorio]
-cd XMXSystem
-```
-
-2. Navegue para o frontend:
-```bash
-cd frontend
-```
-
-3. Instale as dependências:
-```bash
-pnpm install
-```
-
-## 🎯 Scripts Disponíveis
-
-```bash
-# Desenvolvimento
-pnpm dev                # Inicia servidor de desenvolvimento
-
-# Build e Produção
-pnpm build              # Cria build de produção
-pnpm start              # Inicia servidor de produção
-
-# Qualidade de Código
-pnpm lint               # Executa ESLint
-pnpm lint:check         # Verifica problemas de lint
-pnpm lint:fix           # Corrige problemas automaticamente
-pnpm type:check         # Verifica tipos TypeScript
-pnpm check:all          # Executa todas as verificações
-```
-
-## 📁 Estrutura do Projeto
-
-### Frontend (Este repositório)
 ```
 XMXSystem/
-└── frontend/               # Aplicação Next.js
-    ├── app/               # App Router
-    │   ├── (dashboard)/   # Rotas do dashboard
-    │   │   ├── affiliates/# Página de afiliados
-    │   │   ├── sales/     # Página de vendas
-    │   │   └── page.tsx   # Dashboard principal
-    │   └── login/         # Página de login
-    ├── components/        # Componentes reutilizáveis
-    │   └── ui/           # Componentes shadcn/ui
-    ├── lib/              # Utilitários
-    └── public/           # Assets estáticos
+├── frontend/          # Next.js dashboard application
+│   ├── app/          # App Router pages
+│   ├── components/   # React components
+│   └── README.md     # Frontend documentation
+├── backend/          # Local development copy (excluded from git)
+└── README.md         # This file
 ```
 
-### Backend (Repositório separado)
+### Backend (Separate Repository)
 - **Repository**: [XMXSystem-Backend](https://github.com/ctga09/XMXSystem-Backend)
-- **Tech**: FastAPI + Python 3.11
-- **Deploy**: Google Cloud Run ✅
-- **Production**: https://xmx-backend-aquzld6ywq-uc.a.run.app
+- **Purpose**: Webhook processing, API endpoints, CartPanda integration
+- **Deployment**: Google Cloud Run with automatic CI/CD
 
-## 🎨 Tema e Design
+## 🚀 Quick Start
 
-O projeto utiliza um tema dark personalizado com a seguinte paleta de cores:
-
-- Background principal: `#0D0C12`
-- Background secundário: `#1A1920`
-- Bordas: `#2A2833`
-- Cor primária (roxo): `#5F2EEA`
-
-## 🚦 Status do Projeto
-
-### ✅ Concluído
-- Interface do dashboard implementada
-- Sistema de navegação com sidebar
-- Páginas de vendas e afiliados
-- Tema dark consistente
-- Deploy no Vercel com variáveis de ambiente configuradas
-- Banco de dados Supabase configurado com RLS
-- Backend API desenvolvido (FastAPI/Python)
-- Frontend integrado com Supabase
-- Dashboard e vendas exibindo dados reais
-- Real-time updates funcionando
-- Hooks React para dados (useSales, useDashboardMetrics)
-- Webhook endpoint implementado e testado
-- Integração com CartPanda funcionando (formato real)
-- Sistema de logs para monitorar webhooks
-- Backend separado em repositório próprio
-- Todos os bugs de webhook corrigidos (Decimal, transaction_id)
-- Integração com CartPanda 100% funcional
-- Backend deployado no Google Cloud Run
-- CI/CD configurado com GitHub Actions
-- URL de produção configurada na CartPanda
-- Docker containerização com Artifact Registry
-- Auto-scaling de 0 a 100 instâncias
-
-### ⏳ Próximos Passos
-- Autenticação com Supabase Auth
-- Página de afiliados com dados reais
-- Relatórios e analytics avançados
-- Sistema de notificações
-- Export de dados (CSV, PDF)
-
-## 🤝 Contribuindo
-
-1. Verifique o código antes de commitar:
+### Frontend Development
 ```bash
-pnpm check:all
+# Clone and navigate to frontend
+git clone https://github.com/ctga09/XMXSystem.git
+cd XMXSystem/frontend
+
+# Install and run
+pnpm install
+pnpm dev
+```
+📖 [Full Frontend Documentation](./frontend/README.md)
+
+### Backend Development
+```bash
+# Clone backend repository
+git clone https://github.com/ctga09/XMXSystem-Backend.git
+cd XMXSystem-Backend
+
+# Setup and run
+python3.11 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+📖 [Full Backend Documentation](https://github.com/ctga09/XMXSystem-Backend)
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **Framework**: Next.js 15 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4 + shadcn/ui
+- **Database**: Supabase (Real-time subscriptions)
+- **Deployment**: Vercel
+
+### Backend
+- **Framework**: FastAPI (Python 3.11)
+- **Database**: Supabase (PostgreSQL)
+- **Container**: Docker + Artifact Registry
+- **Deployment**: Google Cloud Run
+- **CI/CD**: GitHub Actions
+
+## ✨ Key Features
+
+- 📊 **Real-time Dashboard** - Live sales metrics and KPIs
+- 💳 **Payment Processing** - CartPanda webhook integration
+- 👥 **Affiliate Management** - Track partner performance
+- 📈 **Analytics** - Comprehensive business insights
+- 🔄 **Live Updates** - Real-time data synchronization
+- 🌙 **Dark Theme** - Optimized for extended use
+- 📱 **Responsive** - Works on all devices
+- 🔒 **Secure** - Enterprise-grade security
+
+## 🚦 Deployment Status
+
+| Service | Status | URL | Auto-Deploy |
+|---------|--------|-----|-------------|
+| Frontend | ✅ Live | [Vercel](https://xmx-system.vercel.app) | Yes (main branch) |
+| Backend | ✅ Live | [Cloud Run](https://xmx-backend-aquzld6ywq-uc.a.run.app) | Yes (main branch) |
+| Database | ✅ Active | Supabase | N/A |
+| Webhooks | ✅ Configured | CartPanda | N/A |
+
+## 📊 System Status
+
+- **Frontend Build**: ![Vercel](https://img.shields.io/badge/build-passing-brightgreen)
+- **Backend Build**: [![Deploy to Cloud Run](https://github.com/ctga09/XMXSystem-Backend/actions/workflows/deploy.yml/badge.svg)](https://github.com/ctga09/XMXSystem-Backend/actions/workflows/deploy.yml)
+- **API Health**: [Check Status](https://xmx-backend-aquzld6ywq-uc.a.run.app/health)
+
+## 🔧 Environment Variables
+
+### Frontend (.env.local)
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 ```
 
-2. Corrija problemas de formatação:
-```bash
-pnpm lint:fix
+### Backend (.env.local)
+```env
+SUPABASE_URL=your_supabase_url
+SUPABASE_KEY=your_service_role_key
+CARTPANDA_WEBHOOK_SECRET=your_webhook_secret
+ENVIRONMENT=development
 ```
 
-## 📝 Important Notes
+## 📝 Development Workflow
 
-- ESLint and TypeScript checks are enabled
-- Always run verification scripts before committing
-- The project uses pnpm as the package manager
-- Claude Code configuration available in `CLAUDE.md`
-- Backend has its own repository: [XMXSystem-Backend](https://github.com/ctga09/XMXSystem-Backend)
-- Environment variables must be configured in Vercel dashboard
-- Webhook data is saved with `CP_` prefix to identify CartPanda orders
-- All webhook integration bugs have been fixed and tested
-- Repository separation completed on January 5, 2025
-
-## 🗺️ Roadmap
-
-### Phase 1 - Foundation ✅
-- [x] Project setup with Next.js 15
-- [x] UI component library integration
-- [x] Dark theme implementation
-- [x] Basic routing structure
-- [x] Supabase database setup
-- [x] Frontend deployment on Vercel
-- [x] Backend API development (FastAPI)
-
-### Phase 2 - Core Features ✅
-- [x] Sales tracking API with FastAPI
-- [x] Real-time data synchronization with Supabase
-- [x] Live sales data in dashboard
-- [x] Frontend hooks for data fetching
-- [x] Webhook integration with CartPanda
-- [x] Webhook logging and monitoring system
-- [x] Ngrok setup for local testing
-
-### Phase 3 - Production Deployment ✅
-- [x] Backend deployment on Google Cloud Run
-- [x] Production webhook URL configuration
-- [x] CI/CD pipeline with GitHub Actions
-- [x] SSL certificates and security hardening
-- [ ] Authentication system with Supabase Auth
-
-### Phase 4 - Advanced Features
-- [ ] Affiliate management system with real data
-- [ ] Advanced analytics dashboard
-- [ ] Email notifications
-- [ ] Export functionality (CSV, PDF)
-- [ ] Multi-language support
-- [ ] Mobile app (React Native)
-- [ ] AI-powered insights and predictions
+1. **Frontend Changes**: Push to main → Auto-deploy to Vercel
+2. **Backend Changes**: Push to main → Auto-deploy to Cloud Run
+3. **Database Changes**: Apply migrations via Supabase dashboard
+4. **Testing**: Local development with hot reload
 
 ## 🤝 Contributing
 
-1. Check code quality before committing:
+### Code Quality Checks
 ```bash
+# Frontend
+cd frontend
 pnpm check:all
+
+# Backend
+cd backend
+python -m pytest
 ```
 
-2. Fix formatting issues:
-```bash
-pnpm lint:fix
+### Commit Convention
+```
+feat: new feature
+fix: bug fix
+docs: documentation
+style: formatting
+refactor: code restructuring
+test: tests
+chore: maintenance
 ```
 
-3. Follow the commit message convention:
-```
-feat: add new feature
-fix: resolve bug
-docs: update documentation
-style: formatting changes
-refactor: code improvements
-test: add tests
-chore: maintenance tasks
-```
+## 📚 Documentation
+
+- 📖 [Frontend Documentation](./frontend/README.md)
+- 📖 [Backend Documentation](https://github.com/ctga09/XMXSystem-Backend)
+- 📖 [API Documentation](https://xmx-backend-aquzld6ywq-uc.a.run.app/docs)
+- 📖 [Claude Code Instructions](./CLAUDE.md)
+- 📖 [Deployment Guide](https://github.com/ctga09/XMXSystem-Backend/blob/main/DEPLOYMENT.md)
+
+## 🔗 Related Links
+
+- **Frontend Repository**: [XMXSystem](https://github.com/ctga09/XMXSystem)
+- **Backend Repository**: [XMXSystem-Backend](https://github.com/ctga09/XMXSystem-Backend)
+- **Live Application**: [xmx-system.vercel.app](https://xmx-system.vercel.app)
+- **API Base URL**: [xmx-backend-aquzld6ywq-uc.a.run.app](https://xmx-backend-aquzld6ywq-uc.a.run.app)
+
+## 🗺️ Roadmap
+
+### ✅ Phase 1 - Foundation (Completed)
+- Project setup and architecture
+- Basic UI implementation
+- Database configuration
+
+### ✅ Phase 2 - Core Features (Completed)
+- Sales tracking system
+- Real-time data sync
+- Webhook integration
+
+### ✅ Phase 3 - Production Deployment (Completed)
+- Cloud Run deployment
+- CI/CD pipeline
+- Production webhooks
+
+### ⏳ Phase 4 - Advanced Features (In Progress)
+- [ ] User authentication (Supabase Auth)
+- [ ] Advanced analytics dashboard
+- [ ] Export functionality
+- [ ] Email notifications
+- [ ] Mobile app
 
 ## 📄 License
 
 This project is proprietary software owned by XMX Corp. All rights reserved.
 
-## 🙏 Acknowledgments
-
-- Built with ❤️ using Next.js and shadcn/ui
-- Special thanks to the open-source community
-
 ---
 
 <p align="center">
-  <strong>XMX Corp Dashboard</strong> - Empowering Business Intelligence
+  <strong>XMX System</strong> - Empowering Business Intelligence
+  <br>
+  Built with ❤️ by XMX Corp Development Team
 </p>
