@@ -2,6 +2,70 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 🚨 IMPORTANT: MCP Tools Available - ALWAYS USE THESE!
+
+### Installed MCP Tools
+This project has Model Context Protocol (MCP) tools installed. **YOU MUST ALWAYS USE THESE TOOLS** instead of traditional CLI commands or direct API calls.
+
+#### Available MCPs:
+1. **GitHub MCP** (`mcp__github__*`) - For all GitHub operations
+2. **Supabase MCP** (`mcp__supabase__*`) - For all database operations
+
+### ⚠️ Critical Rules:
+- **ALWAYS** use MCP tools when available
+- **NEVER** use git CLI commands when MCP GitHub is available
+- **NEVER** install gh CLI or other tools when MCP is available
+- **ALWAYS** check if an MCP function exists before using alternatives
+
+### 📊 Quick Reference - Use MCP Instead!
+
+| ❌ DON'T USE THIS | ✅ USE THIS INSTEAD | Description |
+|-------------------|---------------------|-------------|
+| `git push` | `mcp__github__push_files` | Push files to GitHub |
+| `git commit -m` | `mcp__github__create_or_update_file` | Commit changes |
+| `gh pr create` | `mcp__github__create_pull_request` | Create pull request |
+| `git clone` | `mcp__github__get_file_contents` | Read repo files |
+| `gh issue create` | `mcp__github__create_issue` | Create GitHub issue |
+| `gh repo fork` | `mcp__github__fork_repository` | Fork repository |
+| `SQL queries` | `mcp__supabase__execute_sql` | Run SQL queries |
+| `CREATE TABLE` | `mcp__supabase__apply_migration` | Database migrations |
+| `psql` | `mcp__supabase__list_tables` | List database tables |
+| Webhook testing | `mcp__supabase__get_logs` | Check webhook logs |
+
+### MCP GitHub Functions Available:
+- `mcp__github__create_repository` - Create new repo
+- `mcp__github__create_or_update_file` - Create/update single file
+- `mcp__github__push_files` - Push multiple files
+- `mcp__github__get_file_contents` - Read files
+- `mcp__github__create_pull_request` - Create PR
+- `mcp__github__create_issue` - Create issue
+- `mcp__github__fork_repository` - Fork repo
+- `mcp__github__create_branch` - Create branch
+- `mcp__github__list_commits` - List commits
+- `mcp__github__search_repositories` - Search repos
+- `mcp__github__search_code` - Search code
+
+### MCP Supabase Functions Available:
+- `mcp__supabase__execute_sql` - Execute SQL queries
+- `mcp__supabase__apply_migration` - Apply database migrations
+- `mcp__supabase__list_tables` - List all tables
+- `mcp__supabase__list_migrations` - List migrations
+- `mcp__supabase__get_logs` - Get service logs
+- `mcp__supabase__get_project_url` - Get project URL
+- `mcp__supabase__get_anon_key` - Get anon key
+- `mcp__supabase__generate_typescript_types` - Generate TS types
+
+### Example Usage:
+```python
+# ❌ WRONG - Don't do this:
+git add .
+git commit -m "message"
+git push origin main
+
+# ✅ CORRECT - Do this instead:
+Use mcp__github__push_files with files array and commit message
+```
+
 ## Project Overview
 
 XMX Corp Dashboard - A modern business dashboard application built with Next.js 15, featuring real-time sales tracking, affiliate management, and comprehensive analytics. The application is designed for XMX Corp to monitor business performance with an intuitive dark-themed interface.
@@ -207,3 +271,28 @@ Environment variables must be configured in Vercel dashboard for deployment.
 3. Add advanced analytics and reporting
 4. Implement data export functionality
 5. Add webhook retry mechanism for failed requests
+
+## 🔴 CRITICAL REMINDERS FOR CLAUDE
+
+### MCP Tools Usage (MANDATORY)
+1. **ALWAYS** use MCP tools when available - NO EXCEPTIONS
+2. **NEVER** attempt to use git CLI when MCP GitHub is available
+3. **NEVER** try to install gh CLI, it's not needed - use MCP
+4. **ALWAYS** use `mcp__github__push_files` instead of `git push`
+5. **ALWAYS** use `mcp__github__create_or_update_file` for commits
+6. **ALWAYS** use `mcp__supabase__*` functions for database operations
+
+### Before Using Any Tool:
+Ask yourself: "Is there an MCP function for this?"
+- If YES → Use the MCP function
+- If NO → Only then consider alternatives
+- If UNSURE → Check the MCP functions list above
+
+### Common Mistakes to Avoid:
+- ❌ Running `git push origin main`
+- ❌ Running `git commit -m "message"`
+- ❌ Installing `gh` CLI
+- ❌ Using SQL directly without MCP
+- ❌ Trying to clone repos with git clone
+
+Remember: MCP tools are ALWAYS the preferred method when available!
