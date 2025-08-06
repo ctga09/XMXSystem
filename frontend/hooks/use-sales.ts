@@ -27,15 +27,21 @@ export function useSales() {
 
   async function fetchSales() {
     try {
+      console.log('Fetching sales from Supabase...')
       const { data, error } = await supabase
         .from('sales')
         .select('*')
         .order('created_at', { ascending: false })
       
-      if (error) throw error
+      if (error) {
+        console.error('Supabase error:', error)
+        throw error
+      }
       
+      console.log('Sales data received:', data)
       setSales(data || [])
     } catch (error: any) {
+      console.error('Error fetching sales:', error)
       setError(error.message)
     } finally {
       setLoading(false)

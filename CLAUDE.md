@@ -30,6 +30,8 @@ pnpm run check:all    # Run all checks (types + lint)
 ### Backend (FastAPI - Separate Repository)
 The backend is maintained in a separate repository: [XMXSystem-Backend](https://github.com/ctga09/XMXSystem-Backend)
 
+**Production URL**: https://xmx-backend-aquzld6ywq-uc.a.run.app
+
 ```bash
 # Backend commands (run from backend repository)
 source venv/bin/activate           # Activate virtual environment
@@ -39,21 +41,25 @@ uvicorn app.main:app --reload     # Start development server (port 8000)
 # Testing webhook locally
 python test_webhook.py            # Send test webhook
 
-# Using ngrok for external testing
-ngrok http 8000                   # Create public URL for webhook testing
-# Or use the script: ./start_ngrok.sh
+# Docker testing (recommended)
+./scripts/test-docker-local.sh    # Test with production-like environment
+
+# Deployment (automatic on push to main)
+git push origin main              # Triggers automatic deploy to Google Cloud Run
 ```
 
 ## Architecture
 
 ### Tech Stack
-- **Frontend**: Next.js 15.2.4 with App Router
+- **Frontend**: Next.js 15.2.4 with App Router (Deployed on Vercel)
 - **UI Components**: shadcn/ui with Radix UI primitives
 - **Styling**: Tailwind CSS v4 with custom dark theme
 - **Language**: TypeScript
 - **Package Manager**: pnpm
 - **Database**: Supabase (PostgreSQL)
-- **Backend API**: FastAPI/Python (maintained separately, not in this repo)
+- **Backend API**: FastAPI/Python (Deployed on Google Cloud Run)
+- **CI/CD**: GitHub Actions for automatic deployments
+- **Container**: Docker with Artifact Registry
 
 ### Project Structure
 
@@ -116,11 +122,12 @@ ESLint and TypeScript checks are now enabled. Always run `pnpm run check:all` be
 - Webhook endpoint configured and tested with real data
 - Adapted to CartPanda's specific payload format
 - Successfully receiving and processing order events
-- Tested with ngrok for local development
+- Production webhook URL configured: https://xmx-backend-aquzld6ywq-uc.a.run.app/webhook/cartpanda
 
 ### Backend API ✅
 - FastAPI with Python 3.11
 - Separate repository: [XMXSystem-Backend](https://github.com/ctga09/XMXSystem-Backend)
+- Production URL: https://xmx-backend-aquzld6ywq-uc.a.run.app
 - Webhook endpoint: `/webhook/cartpanda`
 - Visual logs interface: `/webhooks/logs`
 - Health check: `/health`
@@ -128,10 +135,13 @@ ESLint and TypeScript checks are now enabled. Always run `pnpm run check:all` be
 - All webhook bugs fixed (Decimal serialization, transaction_id handling)
 - Successfully processing real CartPanda webhooks
 
-### Backend Deployment (Pending)
-- Will be deployed on Google Cloud Run
-- Separate from frontend deployment
-- Production webhook URL to be configured in CartPanda
+### Backend Deployment on Google Cloud Run ✅
+- Deployed at: https://xmx-backend-aquzld6ywq-uc.a.run.app
+- Automatic CI/CD via GitHub Actions (push to main = deploy)
+- Docker containers stored in Artifact Registry
+- Auto-scaling from 0 to 100 instances
+- Secure HTTPS with automatic SSL certificates
+- Production webhook configured in CartPanda
 
 ## Development Notes
 
@@ -154,13 +164,20 @@ NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 ```
 
-### Backend (.env.local)
+### Backend (.env.local for local development)
 ```
 SUPABASE_URL=your_supabase_url
 SUPABASE_KEY=your_service_role_key  # For webhook writes
 CARTPANDA_WEBHOOK_SECRET=your_webhook_secret
 ENVIRONMENT=development
 ```
+
+### Google Cloud Run (Production)
+Environment variables are configured in Cloud Run and GitHub Secrets:
+- `SUPABASE_URL` - Supabase project URL
+- `SUPABASE_KEY` - Service role key (not anon key)
+- `CARTPANDA_WEBHOOK_SECRET` - CartPanda API token
+- `ENVIRONMENT` - Set to "production"
 
 ### Vercel Dashboard
 Environment variables must be configured in Vercel dashboard for deployment.
@@ -179,10 +196,14 @@ Environment variables must be configured in Vercel dashboard for deployment.
 9. Adapted models for CartPanda's specific payload format
 10. Fixed all webhook bugs (Decimal serialization, transaction_id handling)
 11. Backend repository created: [XMXSystem-Backend](https://github.com/ctga09/XMXSystem-Backend)
+12. Backend deployed on Google Cloud Run with automatic CI/CD
+13. Production webhook URL configured in CartPanda
+14. Docker containerization with Artifact Registry
+15. GitHub Actions workflow for automatic deployments
 
 ### ⏳ Next Steps
-1. Deploy backend on Google Cloud Run
-2. Configure production webhook URL in CartPanda
-3. Implement Supabase Auth for user authentication
-4. Create affiliate management features with real data
-5. Add advanced analytics and reporting
+1. Implement Supabase Auth for user authentication
+2. Create affiliate management features with real data
+3. Add advanced analytics and reporting
+4. Implement data export functionality
+5. Add webhook retry mechanism for failed requests

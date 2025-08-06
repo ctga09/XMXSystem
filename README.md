@@ -28,7 +28,8 @@ A modern, real-time business intelligence dashboard for XMX Corp, built with cut
 - **[FastAPI](https://fastapi.tiangolo.com/)** - Modern Python web framework
 - **[Python 3.11](https://www.python.org/)** - Backend runtime
 - **Repository**: [XMXSystem-Backend](https://github.com/ctga09/XMXSystem-Backend)
-- **Google Cloud Run** - Serverless deployment (planned)
+- **Production URL**: [https://xmx-backend-aquzld6ywq-uc.a.run.app](https://xmx-backend-aquzld6ywq-uc.a.run.app)
+- **Google Cloud Run** - Serverless deployment with auto-scaling
 
 ## 📋 Pré-requisitos
 
@@ -92,7 +93,8 @@ XMXSystem/
 ### Backend (Repositório separado)
 - **Repository**: [XMXSystem-Backend](https://github.com/ctga09/XMXSystem-Backend)
 - **Tech**: FastAPI + Python 3.11
-- **Deploy**: Google Cloud Run (planejado)
+- **Deploy**: Google Cloud Run ✅
+- **Production**: https://xmx-backend-aquzld6ywq-uc.a.run.app
 
 ## 🎨 Tema e Design
 
@@ -120,19 +122,21 @@ O projeto utiliza um tema dark personalizado com a seguinte paleta de cores:
 - Webhook endpoint implementado e testado
 - Integração com CartPanda funcionando (formato real)
 - Sistema de logs para monitorar webhooks
-- Teste local com ngrok configurado
 - Backend separado em repositório próprio
 - Todos os bugs de webhook corrigidos (Decimal, transaction_id)
 - Integração com CartPanda 100% funcional
-
-### 🔄 Em Progresso
-- Deploy do backend no Google Cloud Run
+- Backend deployado no Google Cloud Run
+- CI/CD configurado com GitHub Actions
+- URL de produção configurada na CartPanda
+- Docker containerização com Artifact Registry
+- Auto-scaling de 0 a 100 instâncias
 
 ### ⏳ Próximos Passos
-- Configurar URL de produção do webhook na CartPanda
 - Autenticação com Supabase Auth
 - Página de afiliados com dados reais
 - Relatórios e analytics avançados
+- Sistema de notificações
+- Export de dados (CSV, PDF)
 
 ## 🤝 Contribuindo
 
@@ -178,11 +182,12 @@ pnpm lint:fix
 - [x] Webhook logging and monitoring system
 - [x] Ngrok setup for local testing
 
-### Phase 3 - Production Deployment (Current)
-- [ ] Backend deployment on Google Cloud Run
-- [ ] Production webhook URL configuration
+### Phase 3 - Production Deployment ✅
+- [x] Backend deployment on Google Cloud Run
+- [x] Production webhook URL configuration
+- [x] CI/CD pipeline with GitHub Actions
+- [x] SSL certificates and security hardening
 - [ ] Authentication system with Supabase Auth
-- [ ] SSL certificates and security hardening
 
 ### Phase 4 - Advanced Features
 - [ ] Affiliate management system with real data

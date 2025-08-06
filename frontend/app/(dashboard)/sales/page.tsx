@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { CalendarIcon, Search, Filter } from "lucide-react"
 import type { DateRange } from "react-day-picker"
 import { format } from "date-fns"
@@ -35,7 +35,14 @@ export default function SalesPage() {
     return Array.from(methods)
   }, [sales])
   
-  const [selectedMethods, setSelectedMethods] = useState<string[]>(paymentMethods)
+  const [selectedMethods, setSelectedMethods] = useState<string[]>([])
+
+  // Inicializar selectedMethods com todos os métodos quando carregados
+  useEffect(() => {
+    if (paymentMethods.length > 0 && selectedMethods.length === 0) {
+      setSelectedMethods(paymentMethods)
+    }
+  }, [paymentMethods])
 
   const handleMethodChange = (method: string) => {
     setSelectedMethods((prev) => 
@@ -65,8 +72,8 @@ export default function SalesPage() {
         if (date.to && saleDate > date.to) return false
       }
 
-      // Filtro de método de pagamento
-      if (!selectedMethods.includes(sale.payment_method)) {
+      // Filtro de método de pagamento (se nenhum selecionado, mostra todos)
+      if (selectedMethods.length > 0 && !selectedMethods.includes(sale.payment_method)) {
         return false
       }
 
