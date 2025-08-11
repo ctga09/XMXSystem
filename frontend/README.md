@@ -12,8 +12,9 @@ Modern dashboard interface for XMX Corp, built with Next.js 15 and real-time dat
 ## ✨ Features
 
 - 📊 **Real-time Dashboard** - Live sales and performance metrics
+- 💱 **USD Display** - Automatic display of values in USD when available
 - 👥 **Affiliate Management** - Track and manage affiliate partners
-- 📈 **Advanced Analytics** - Comprehensive business insights
+- 📈 **Advanced Analytics** - Comprehensive business insights with USD metrics
 - 🌙 **Dark Mode** - Eye-friendly interface optimized for extended use
 - 📱 **Responsive Design** - Seamless experience across all devices
 - 🔄 **Real-time Updates** - Instant data synchronization via Supabase
@@ -138,6 +139,12 @@ The application is optimized for dark mode with carefully selected colors for re
 - Real-time data synchronization
 - Row Level Security (RLS) enabled
 - Optimistic updates for better UX
+
+### USD/FX & Commission (Data Semantics)
+- `price` and `commission_value` are recorded in BRL (normalized)
+- `amount_usd` is computed at webhook time via `fx_rate_brl_usd` and stored
+- `commission_usd` is computed from `commission_value × fx_rate_brl_usd` and stored
+- The UI prefers USD when `amount_usd` exists; falls back to BRL otherwise
 
 ### Custom Hooks
 - `useSales()` - Fetches and manages sales data

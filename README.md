@@ -113,6 +113,12 @@ uvicorn app.main:app --reload
 
 - 📊 **Real-time Dashboard** - Live sales metrics and KPIs with instant updates
 - 💳 **Payment Processing** - CartPanda webhook integration **[100% Functional]**
+- 💱 **USD/FX Conversion** - Automatic BRL→USD conversion with real-time exchange rates **[NEW ✅]**
+  - **💵 Real-time FX**: Latest BRL→USD rates from dual providers
+  - **🔄 Automatic Conversion**: All sales converted to USD at webhook time
+  - **📊 Dashboard Display**: Shows USD when available, BRL fallback
+  - **⚡ Performance Cache**: 60-second FX rate caching
+  - **🔒 Idempotent**: Never recomputes for same transaction
 - 📋 **Advanced Webhook Management** - Complete audit trail system **[FULLY OPERATIONAL]**
   - **🗃️ Dual Storage**: Both `sales` and `webhook_logs` tables working simultaneously
   - **📅 Interactive Date Picker**: Visual calendar with range selection
@@ -161,6 +167,21 @@ CARTPANDA_WEBHOOK_SECRET=your_webhook_secret
 ENVIRONMENT=development
 ```
 
+### USD/FX and Commission Rules ✅
+
+**Status: IMPLEMENTED & PRODUCTION READY**
+
+- **Source Values**: `price` and `commission_value` are always in BRL
+- **BRL Amount**: `amount_brl = line_items[0].price * line_items[0].quantity`
+- **FX Rate**: Latest BRL→USD at webhook time (6 decimals precision)
+  - Providers: exchangerate.host (primary), frankfurter.app (fallback)
+  - Stored fields: `fx_at` (timestamp), `fx_source` (provider name)
+- **USD Conversion**: `amount_usd = amount_brl × fx_rate_brl_usd` (2 decimals, ROUND_HALF_UP)
+- **Commission USD**: `commission_usd = commission_value × fx_rate_brl_usd` (2 decimals)
+- **Currency Info**: `payment_currency` is informational only
+- **Idempotency**: Never recompute USD/FX for the same `cartpanda_id`
+- **Production Validated**: 2 sales processed with USD (R$ 1.603,60 → US$ 295,43)
+
 ## 📝 Development Workflow
 
 1. **Frontend Changes**: Push to main → Auto-deploy to Vercel
@@ -182,8 +203,20 @@ python -m pytest
 ```
 
 ### Webhook Testing
-- **Local Testing**: `python test_webhook.py`
+- **Local Testing**: Use replay script with real sanitized payloads
+  ```bash
+  # Test standard sale with USD conversion
+  bash scripts/replay_cartpanda_webhook.sh \
+    backend/tests/fixtures/cartpanda/order_paid_real_sanitized.json \
+    http://localhost:8000/webhook/cartpanda
+  
+  # Test sale with affiliate commission in USD
+  bash scripts/replay_cartpanda_webhook.sh \
+    backend/tests/fixtures/cartpanda/order_paid_real_sanitized_commission.json \
+    http://localhost:8000/webhook/cartpanda
+  ```
 - **Production Testing**: Live CartPanda webhooks processing correctly
+- **USD Validation**: Check `amount_usd`, `fx_rate_brl_usd`, `commission_usd` in database
 - **Monitoring**: Real-time logs at `/webhooks/logs`
 
 ## 🤝 Contributing
@@ -248,6 +281,13 @@ chore: maintenance
 
 ## 🎯 Recent Achievements (Current Session)
 
+### ✅ USD/FX Currency Conversion (NEW):
+1. **Real-time FX Rates** - Dual providers with automatic fallback
+2. **Automatic BRL→USD Conversion** - All sales converted at webhook time
+3. **Frontend USD Display** - Dashboard shows USD when available
+4. **Idempotent Processing** - Never recomputes for same transaction
+5. **Production Validated** - 2 sales processed with USD successfully
+
 ### ✅ Critical Bug Fixes Resolved:
 1. **DateTime Serialization Error** - Fixed with `sanitize_for_json()` function
 2. **Webhook_logs Table Issues** - 100% operational with dual storage
@@ -266,8 +306,10 @@ chore: maintenance
 
 ### Database Schema
 ```sql
--- Sales table (structured data for dashboard)
-sales: cartpanda_id, customer_name, product_name, price, status, created_at
+-- Sales table (structured data for dashboard with USD/FX)
+sales: cartpanda_id, customer_name, product_name, price, status, created_at,
+       amount_brl, amount_usd, fx_rate_brl_usd, fx_at, fx_source,
+       payment_currency, commission_value, commission_usd
 
 -- Webhook_logs table (complete audit trail)
 webhook_logs: id, event, order_id, customer_email, product_name, 
