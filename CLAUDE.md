@@ -191,6 +191,22 @@ ESLint and TypeScript checks are now enabled. Always run `pnpm run check:all` be
 - Advanced webhook management interface: https://xmx-backend-aquzld6ywq-uc.a.run.app/webhooks/logs
 - **✅ ALL BUGS RESOLVED**: DateTime serialization, transaction_id handling, Decimal conversion
 
+### USD/FX Currency Conversion ✅
+- **✅ IMPLEMENTED & PRODUCTION READY**: Automatic BRL→USD conversion with real-time FX rates
+- **📈 FX Providers**: Dual providers with fallback (exchangerate.host → frankfurter.app)
+- **💱 Conversion Rules**:
+  - `amount_brl`: From `line_items[0].price * quantity` (always BRL)
+  - `amount_usd`: `amount_brl × fx_rate_brl_usd` (2 decimals, ROUND_HALF_UP)
+  - `fx_rate_brl_usd`: Latest rate at webhook time (6 decimals precision)
+  - `commission_usd`: Affiliate commission converted to USD
+- **⚡ Performance**: 60-second cache to avoid API hammering
+- **🔒 Idempotency**: Never recompute USD/FX for same `cartpanda_id`
+- **✅ Production Validated**: 2 sales already processed with USD (R$ 1.603,60 → US$ 295,43)
+- **📊 Frontend Display**: Shows USD when available, fallback to BRL
+- **🧪 Testing**: Replay scripts with real sanitized payloads
+  - `scripts/replay_cartpanda_webhook.sh`
+  - `backend/tests/fixtures/cartpanda/*.json`
+
 ### Backend API ✅
 - **✅ 100% FUNCTIONAL**: FastAPI with Python 3.11 fully operational
 - Separate repository: [XMXSystem-Backend](https://github.com/ctga09/XMXSystem-Backend)
@@ -274,8 +290,9 @@ Environment variables must be configured in Vercel dashboard for deployment.
 13. **✅ Zero Data Loss**: Complete audit trail with JSONB webhook preservation
 14. **✅ Production Monitoring**: Health checks and performance metrics
 15. **✅ Enhanced Documentation**: Complete system documentation updated
+16. **✅ USD/FX Conversion**: Automatic BRL→USD with real-time exchange rates
 
-### ✅ Critical Bug Fixes Resolved (Current Session)
+### ✅ Critical Bug Fixes Resolved (Previous Session)
 1. **✅ DateTime Serialization Error**: Fixed with recursive `sanitize_for_json()` function
 2. **✅ Webhook_logs Table Not Saving**: Resolved dual storage issue completely
 3. **✅ Silent Webhook Failures**: Implemented emoji-coded logging for visibility
@@ -324,8 +341,9 @@ Remember: MCP tools are ALWAYS the preferred method when available!
 - **Backend**: ✅ Live on Cloud Run processing webhooks perfectly
 - **Database**: ✅ Dual storage system working flawlessly
 - **Webhooks**: ✅ CartPanda integration with zero failures
+- **USD/FX**: ✅ Automatic conversion with real-time rates
 - **Monitoring**: ✅ Advanced interface with comprehensive features
 - **Documentation**: ✅ Complete and up-to-date
 - **Bug Status**: ✅ All critical issues resolved and validated
 
-The XMX System is now a fully operational, production-ready business intelligence platform with advanced webhook processing capabilities and zero data loss guarantee.
+The XMX System is now a fully operational, production-ready business intelligence platform with advanced webhook processing capabilities, USD/FX conversion, and zero data loss guarantee.
