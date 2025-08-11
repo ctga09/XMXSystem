@@ -40,7 +40,12 @@ export function useDashboardMetrics() {
         .eq('status', 'approved')
 
       if (sales) {
-        const totalRevenue = sales.reduce((sum, sale) => sum + Number(sale.price), 0)
+        // Prefer USD if available; fallback to BRL
+        const totalRevenue = sales.reduce((sum, sale: any) => {
+          const usd = sale.amount_usd
+          if (usd != null) return sum + Number(usd)
+          return sum + Number(sale.price)
+        }, 0)
         const totalSales = sales.length
         const uniqueAffiliates = new Set(sales.map(s => s.affiliate_code).filter(Boolean))
         const totalAffiliates = uniqueAffiliates.size

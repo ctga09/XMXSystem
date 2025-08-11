@@ -18,10 +18,18 @@ export interface Sale {
   product_id: string
   price: number
   currency: string
+  // New monetary normalization fields (may be null until migration is applied)
+  amount_brl?: number | null
+  amount_usd?: number | null
+  fx_rate_brl_usd?: number | null
+  fx_at?: string | null
+  fx_source?: string | null
+  payment_currency?: string | null
   status: 'approved' | 'refunded' | 'cancelled'
   affiliate_code?: string
   affiliate_name?: string
   commission_value?: number
+  commission_usd?: number | null
   payment_method: string
   transaction_id: string
   webhook_received_at: string
