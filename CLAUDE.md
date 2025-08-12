@@ -69,9 +69,8 @@ pnpm run check:all    # Run all checks (types + lint)
 ## Project Structure
 
 ```
-frontend/
-├── app/                      # Next.js App Router
-│   ├── (dashboard)/         # Dashboard layout group
+app/                          # Next.js App Router
+├── (dashboard)/             # Dashboard layout group
 │   │   ├── layout.tsx       # Sidebar navigation layout
 │   │   ├── page.tsx         # Dashboard home
 │   │   ├── sales/           # Sales page

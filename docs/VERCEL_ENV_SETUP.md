@@ -64,4 +64,4 @@ Se quiser que o Vercel leia automaticamente, você poderia:
 
 ## Referência
 
-O arquivo `.env.example` foi criado em `frontend/.env.example` para documentar quais variáveis são necessárias.
+O arquivo `.env.example` foi criado em `.env.example` para documentar quais variáveis são necessárias.
