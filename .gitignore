@@ -58,18 +58,7 @@ Thumbs.db
 logs/
 *.log
 
-# Project specific
-TODO.md
-
-# Python
-venv/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.so
-.env.local
-
-# Backend - mantido apenas localmente
-/backend/
+# Package manager
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
