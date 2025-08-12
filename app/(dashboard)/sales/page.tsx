@@ -81,12 +81,8 @@ export default function SalesPage() {
     })
   }, [sales, searchQuery, date, selectedMethods])
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(value)
-  }
+  const formatCurrencyUSD = (value: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value)
+  const formatCurrencyBRL = (value: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
 
   const formatDate = (dateString: string) => {
     return format(new Date(dateString), "dd/MM/yyyy HH:mm", { locale: ptBR })
@@ -230,7 +226,11 @@ export default function SalesPage() {
                     <TableCell className="hidden lg:table-cell text-gray-300">
                       {sale.affiliate_name || '-'}
                     </TableCell>
-                    <TableCell className="text-gray-300">{formatCurrency(sale.price)}</TableCell>
+                    <TableCell className="text-gray-300">
+                      {sale.amount_usd != null
+                        ? formatCurrencyUSD(Number(sale.amount_usd))
+                        : formatCurrencyBRL(Number(sale.price))}
+                    </TableCell>
                     <TableCell>{getStatusBadge(sale.status)}</TableCell>
                   </TableRow>
                 ))
